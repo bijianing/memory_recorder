@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../view/localization.dart';
+
+
 enum FieldTypes
 {
   Text,
@@ -9,22 +12,21 @@ enum FieldTypes
 }
 
 
-class FieldType {
-  FieldType(this.type);
-  final FieldTypes type;
+class MRDataManager {
 
-  String toString() {
-    return 'null';
+static String getFieldTypeName(BuildContext context, FieldTypes f) {
+  switch (f) {
+    case FieldTypes.Text:
+      return MRLocalizations.of(context).field_type_text;
+    case FieldTypes.Number:
+      return MRLocalizations.of(context).field_type_number;
+    case FieldTypes.Place:
+      return MRLocalizations.of(context).field_type_place;
+    case FieldTypes.DateTime:
+      return MRLocalizations.of(context).field_type_time;
   }
+
+  return null;
 }
-
-class FieldTypeText extends FieldType {
-  FieldTypeText(type) : super(type);
-
-  
-}
-
-class DataCenter {
-
   
 }
