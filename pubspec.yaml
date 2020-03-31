@@ -26,6 +26,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  flutter_speed_dial:
+
+  logging: ^0.11.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -44,6 +48,7 @@ flutter:
         - asset: fonts/MPLUSRounded1c-Light.ttf
         - asset: fonts/MPLUSRounded1c-Regular.ttf
           style: italic
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

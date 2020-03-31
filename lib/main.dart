@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         primarySwatch: Colors.green,
         fontFamily: 'MPLUSRounded1c',
+        buttonColor: Colors.green[400],
         /*
         textTheme: Theme.of(context).textTheme.apply(
           bodyColor: Colors.white,
@@ -119,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               leading: Icon(Icons.add),
               title: Text(
-                MRLocalizations.of(context).add_data_type,
+                MRLocalizations.of(context).addDataType,
               ),
               onTap: () {
 //                Navigator.pop(context);

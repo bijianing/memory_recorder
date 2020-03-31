@@ -1,130 +1,8 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 
-class MRLocalizations {
-  MRLocalizations(this.locale);
-
-  final Locale locale;
-
-  static MRLocalizations of(BuildContext context) {
-    return Localizations.of<MRLocalizations>(context, MRLocalizations);
-  }
-
-  static Map<String, Map<String, String>> _localizedValues = {
-    'en': {
-      'title': 'Memory Recorder',
-      'setting': 'Settings',
-      'view_data': 'View Data',
-      'add_data': 'Add Data',
-      'add_data_type': 'Add Data Type',
-      'name': 'Name',
-      'fields': 'Fields',
-      'field_name_error_empty': 'Please enter field name',
-      'field_name_error_short': 'field name is too short',
-      'add': 'Add',
-      'field_type_text': 'Text',
-      'field_type_number': 'Number',
-      'field_type_place': 'Place',
-      'field_type_time': 'DateTime',
-      'field_name_hint': 'Field name',
-      'field_type_hint': 'Field type',
-    },
-    'ja': {
-      'title': 'メモリ レコーダー',
-      'setting': '設定',
-      'view_data': 'データ表示',
-      'add_data': 'データ追加',
-      'add_data_type': 'データ種類追加',
-      'name': '名前',
-      'fields': 'フィールド',
-      'add': '追加',
-      'field_name_error_empty': 'フィールド名を入力してください',
-      'field_name_error_short': 'フィールド名が短い',
-      'field_type_text': 'テキスト',
-      'field_type_number': '数字',
-      'field_type_place': '場所',
-      'field_type_time': '日時',
-      'field_name_hint': 'フィールド名',
-      'field_type_hint': 'フィールド種類',
-    },
-    'zh': {
-      'title': '回忆记录器',
-      'setting': '设置',
-      'view_data': '查看数据',
-      'add_data': '添加数据',
-      'add_data_type': '添加数据类型',
-      'name': '名字',
-      'fields': '字段',
-      'add': '添加',
-      'field_name_error_empty': '请输入字段名',
-      'field_name_error_short': '字段名太短',
-      'field_type_text': '文本',
-      'field_type_number': '数字',
-      'field_type_place': '地点',
-      'field_type_time': '日期时间',
-      'field_name_hint': '字段名',
-      'field_type_hint': '字段类型',
-    },
-  };
-
-  // about the languageCode: 
-  // https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
-  String get title {
-    return _localizedValues[locale.languageCode]['title'];
-  }
-  String get setting {
-    return _localizedValues[locale.languageCode]['setting'];
-  }
-  String get view_data {
-    return _localizedValues[locale.languageCode]['view_data'];
-  }
-  String get add_data {
-    return _localizedValues[locale.languageCode]['add_data'];
-  }
-  String get add_data_type {
-    return _localizedValues[locale.languageCode]['add_data_type'];
-  }
-  String get name {
-    return _localizedValues[locale.languageCode]['name'];
-  }
-  String get fields {
-    return _localizedValues[locale.languageCode]['fields'];
-  }
-  String get add {
-    return _localizedValues[locale.languageCode]['add'];
-  }
-  String get field_name_error_empty {
-    return _localizedValues[locale.languageCode]['field_name_error_empty'];
-  }
-  String get field_name_error_short {
-    return _localizedValues[locale.languageCode]['field_name_error_short'];
-  }
-  String get field_type_text {
-    return _localizedValues[locale.languageCode]['field_type_text'];
-  }
-  String get field_type_number {
-    return _localizedValues[locale.languageCode]['field_type_number'];
-  }
-  String get field_type_place {
-    return _localizedValues[locale.languageCode]['field_type_place'];
-  }
-  String get field_type_time {
-    return _localizedValues[locale.languageCode]['field_type_time'];
-  }
-  String get field_name_hint {
-    return _localizedValues[locale.languageCode]['field_name_hint'];
-  }
-  String get field_type_hint {
-    return _localizedValues[locale.languageCode]['field_type_hint'];
-  }
-
-
-
-
-
-}
 
 class MRLocalizationsDelegate extends LocalizationsDelegate<MRLocalizations> {
   const MRLocalizationsDelegate();
@@ -141,4 +19,231 @@ class MRLocalizationsDelegate extends LocalizationsDelegate<MRLocalizations> {
 
   @override
   bool shouldReload(MRLocalizationsDelegate old) => false;
+}
+
+class MRLocalizations {
+  MRLocalizations(this.locale);
+
+  final Locale locale;
+
+  static MRLocalizations of(BuildContext context) {
+    return Localizations.of<MRLocalizations>(context, MRLocalizations);
+  }
+  String get title {
+    const Map _lang = {
+      'en': 'Memory Recorder',
+      'ja': 'メモリ レコーダー',
+      'zh': '回忆记录器',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get setting {
+    const Map _lang = {
+      'en': 'Settings',
+      'ja': '設定',
+      'zh': '设置',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get viewData {
+    const Map _lang = {
+      'en': 'View Data',
+      'ja': 'データ表示',
+      'zh': '查看数据',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get addData {
+    const Map _lang = {
+      'en': 'Add Data',
+      'ja': 'データ追加',
+      'zh': '添加数据',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get addDataType {
+    const Map _lang = {
+      'en': 'Add Data Type',
+      'ja': 'データ種類追加',
+      'zh': '添加数据类型',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get name {
+    const Map _lang = {
+      'en': 'Name',
+      'ja': '名前',
+      'zh': '名字',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fields {
+    const Map _lang = {
+      'en': 'Fields',
+      'ja': 'フィールド',
+      'zh': '字段',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldNameErrorEmpty {
+    const Map _lang = {
+      'en': 'Please enter field name',
+      'ja': 'フィールド名を入力してください',
+      'zh': '请输入字段名',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldNameErrorShort {
+    const Map _lang = {
+      'en': 'field name is too short',
+      'ja': 'フィールド名が短い',
+      'zh': '字段名太短',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get add {
+    const Map _lang = {
+      'en': 'Add',
+      'ja': '追加',
+      'zh': '添加',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get tableNameLabel {
+    const Map _lang = {
+      'en': 'New data name',
+      'ja': '新データ名',
+      'zh': '新数据名',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get tableNameHint {
+    const Map _lang = {
+      'en': 'New data name',
+      'ja': '新データ名',
+      'zh': '新数据名',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldTypeText {
+    const Map _lang = {
+      'en': 'Text',
+      'ja': 'テキスト',
+      'zh': '文本',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldTypeNumber {
+    const Map _lang = {
+      'en': 'Number',
+      'ja': '数字',
+      'zh': '数字',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldTypePlace {
+    const Map _lang = {
+      'en': 'Place',
+      'ja': '場所',
+      'zh': '地点',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldTypeTime {
+    const Map _lang = {
+      'en': 'DateTime',
+      'ja': '日時',
+      'zh': '日期时间',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldNameLabel {
+    const Map _lang = {
+      'en': 'Field name',
+      'ja': 'フィールド名',
+      'zh': '字段名',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldNameHint {
+    const Map _lang = {
+      'en': 'Field name',
+      'ja': 'フィールド名',
+      'zh': '字段名',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldTypeLabel {
+    const Map _lang = {
+      'en': 'Field type',
+      'ja': 'フィールド種類',
+      'zh': '字段类型',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldTypeHint {
+    const Map _lang = {
+      'en': 'Field type',
+      'ja': 'フィールド種類',
+      'zh': '字段类型',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldMustLabel {
+    const Map _lang = {
+      'en': 'Must field',
+      'ja': '必須フィールド',
+      'zh': '必须字段',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldDecimalLabel {
+    const Map _lang = {
+      'en': 'Decimal',
+      'ja': '小数',
+      'zh': '小数',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldMultiLineLabel {
+    const Map _lang = {
+      'en': 'Multiple line',
+      'ja': '複数行',
+      'zh': '多行',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get cancel {
+    const Map _lang = {
+      'en': 'Cancel',
+      'ja': 'キャンセル',
+      'zh': '取消',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get ok {
+    const Map _lang = {
+      'en': 'OK',
+      'ja': 'ＯＫ',
+      'zh': '确定',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get removeFieldMsg {
+    const Map _lang = {
+      'en': 'Remove this field',
+      'ja': 'このフィールドを削除',
+      'zh': '删除此字段',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get removeFieldSnackMsg {
+    const Map _lang = {
+      'en': 'Field removed',
+      'ja': 'フィールドを削除しました',
+      'zh': '删除此字段一个字段',
+    };
+    return _lang[locale.languageCode];
+  }
+
 }
