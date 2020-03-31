@@ -3,8 +3,6 @@ import 'package:memory_recorder/model/model.dart';
 import 'package:memory_recorder/view/controls.dart';
 
 import '../model/model.dart';
-import '../model/model.dart';
-import '../model/model.dart';
 import 'localization.dart';
 import '../model/model.dart';
 
