@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 import 'view/controls.dart';
 import 'view/new_data_type.dart';
 import 'view/localization.dart';
-
+import 'model/data_manager.dart';
 
 void main() => runApp(MyApp());
 
@@ -79,20 +81,37 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.add_circle_outline, size: 50),
-            title: Text('View data'),
-            subtitle: Text('View added data'),
+            title: Text('dump firestore collections'),
+            onTap: () {
+              // debug for firestore
+              MRDataManager.instance.dumpDb();
+            },
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.view_comfy, size: 50),
             title: Text('New data'),
             subtitle: Text('add new data'),
+            onTap: () {
+
+            },
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.add_to_photos, size: 50),
             title: Text('New Data type'),
             subtitle: Text('add new data type'),
+            onTap: () async {
+              print("Test firebase: #### Add a New data type ####\n");
+              CollectionReference dataTypeCollection = Firestore.instance.collection('DataTypes');
+              QuerySnapshot dataTypeSnapshot = await dataTypeCollection.getDocuments();
+              int idNumber = dataTypeSnapshot.documents.length + 1;
+              String typeName = 'datatype$idNumber';
+              dataTypeCollection.document(typeName).setData({
+                'name' : 'datatype$idNumber',
+                'fields' : null
+              });
+            },
           ),
           Divider(),
           ListTile(
@@ -136,8 +155,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 MRLocalizations.of(context).setting,
               ),
               onTap: () {
-                // Update the state of the app.
-                // ...
               },
             ),
           ],

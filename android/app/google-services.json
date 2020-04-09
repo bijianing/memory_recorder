@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "977584034003",
+    "firebase_url": "https://memory-recorder.firebaseio.com",
+    "project_id": "memory-recorder",
+    "storage_bucket": "memory-recorder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977584034003:android:ec015d502c144f02444426",
+        "android_client_info": {
+          "package_name": "io.memrec.memory_recorder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977584034003-ankrm6k9q323r1hs5svnfu7228fdvq17.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.memrec.memory_recorder",
+            "certificate_hash": "681ccfb5f55612efdbea452c58d2945d0d5acbf8"
+          }
+        },
+        {
+          "client_id": "977584034003-8dnfsfjh32pqsbpujc0jlum8g8l6hihe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4krjSfNOjUZvaT0i-31g7KJLi22DdsnA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977584034003-8dnfsfjh32pqsbpujc0jlum8g8l6hihe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

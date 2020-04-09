@@ -1,4 +1,4 @@
-package com.example.memory_recorder
+package io.memrec.memory_recorder
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

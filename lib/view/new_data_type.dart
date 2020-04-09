@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:memory_recorder/model/model.dart';
+import 'package:memory_recorder/model/data_manager.dart';
+import 'package:memory_recorder/model/field.dart';
 import 'package:memory_recorder/view/controls.dart';
+import 'localization.dart';
 
 //import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-import '../model/model.dart';
-import 'localization.dart';
 
 
 
@@ -185,7 +185,6 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
 
   void _cancelButtonHandler() {
     Navigator.of(context).pop();
-    MRDataManager.dumpDb();
   }
 
   void _okButtonHandler() async {
@@ -195,8 +194,8 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
     }
     parent.formKey.currentState.save();
     name = parent.tableName;
-    DataType dataType= await MRDataManager.newDataType(name, _fields);
-    print('created a data type, table id: ${dataType.tableId}');
+    DataType dataType= await MRDataManager.instance.newDataType(name, _fields);
+    print('created a data type(${dataType.name})');
   }
 
   List <Widget> _createFieldListWidget() {
