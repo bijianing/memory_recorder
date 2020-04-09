@@ -6,52 +6,45 @@ import 'field.dart';
 
 class MRDataManager {
   final CollectionReference _dataTypeCollection;
-  final CollectionReference _fieldCollection;
-  CollectionReference _dataCollection;
+  final CollectionReference _dataCollection;
 
   static MRDataManager _instance;
 
   // make this a singleton class
-  MRDataManager._privateConstructor(
-    this._dataTypeCollection,
-    this._fieldCollection);
+  MRDataManager._privateConstructor(this._dataTypeCollection, this._dataCollection);
   
   static MRDataManager get instance {
     if (_instance == null) {
       _instance = MRDataManager._privateConstructor(
-        Firestore.instance.collection('DataTypes'),
-        Firestore.instance.collection('Fields'),
+        Firestore.instance.collection('DataType'),
+        Firestore.instance.collection('Data'),
       );
     }
 
     return _instance;
   }
 
+
+
+  /*  Add a new data type */
   Future<DataType> newDataType(String name, List<Field> fields) async {
     DocumentReference dataTypeReference = _dataTypeCollection.document(name);
-    dataTypeReference.setData({
-      'name': name,
-      'fields': null,
-    });
+    DocumentSnapshot dataTypeSnapshot = await dataTypeReference.get();
+    if (dataTypeSnapshot.exists) {
+      return null;
+    }
 
-    List<DocumentReference> fieldsReferenceList = fields.map((f) {
-      DocumentReference fieldReference = _fieldCollection.document(f.name);
-      fieldReference.setData({
+    List<Map<String, dynamic>> fieldsList = fields.map((f) => {
         'name': f.name,
         'must': f.must,
         'multiline': f.multiline,
         'decimal': f.decimal,
-        'datatype': dataTypeReference,
-      });
-      return fieldReference;
     }).toList();
 
-    dataTypeReference.setData(
-      {
-        'fields': fieldsReferenceList,
-      },
-      merge: true
-    );
+    dataTypeReference.setData({
+      'name': name,
+      'fields': fieldsList,
+    });
 
     return DataType(name, fields);
   }

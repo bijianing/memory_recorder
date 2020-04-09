@@ -111,17 +111,17 @@ class MRLocalizations {
   }
   String get tableNameLabel {
     const Map _lang = {
-      'en': 'New data name',
-      'ja': '新データ名',
-      'zh': '新数据名',
+      'en': 'New data type name',
+      'ja': '新データ種類名',
+      'zh': '新数据类型名',
     };
     return _lang[locale.languageCode];
   }
   String get tableNameHint {
     const Map _lang = {
-      'en': 'New data name',
-      'ja': '新データ名',
-      'zh': '新数据名',
+      'en': 'New data type name',
+      'ja': '新データ種類名',
+      'zh': '新数据类型名',
     };
     return _lang[locale.languageCode];
   }
@@ -242,6 +242,22 @@ class MRLocalizations {
       'en': 'Field removed',
       'ja': 'フィールドを削除しました',
       'zh': '删除此字段一个字段',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get dataTypeAlreadyExist {
+    const Map _lang = {
+      'en': 'Data name already exists',
+      'ja': 'データ名が存在しています',
+      'zh': '数据名已存在',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get dataTypeAddSucceed {
+    const Map _lang = {
+      'en': 'New data type added successfully',
+      'ja': '新データ種類を追加できました',
+      'zh': '新数类型据添加成功',
     };
     return _lang[locale.languageCode];
   }

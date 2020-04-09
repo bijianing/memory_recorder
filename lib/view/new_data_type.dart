@@ -195,7 +195,19 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
     parent.formKey.currentState.save();
     name = parent.tableName;
     DataType dataType= await MRDataManager.instance.newDataType(name, _fields);
-    print('created a data type(${dataType.name})');
+    String userMessage;
+
+    // data type exists, notify the user
+    if (dataType == null) {
+      userMessage = MRLocalizations.of(context).dataTypeAlreadyExist;
+    } else {
+      userMessage = MRLocalizations.of(context).dataTypeAddSucceed;
+      Navigator.of(context).pop();
+    }
+
+    Scaffold.of(context).showSnackBar(
+      SnackBar(content: Text(userMessage))
+    );
   }
 
   List <Widget> _createFieldListWidget() {
