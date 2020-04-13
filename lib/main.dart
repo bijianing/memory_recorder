@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'view/controls.dart';
 import 'view/new_data_type.dart';
+import 'view/new_data.dart';
 import 'view/localization.dart';
 import 'model/data_manager.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         primarySwatch: Colors.green,
         fontFamily: 'MPLUSRounded1c',
-        buttonColor: Colors.green[400],
+//        buttonColor: Colors.green[400],
         /*
         textTheme: Theme.of(context).textTheme.apply(
           bodyColor: Colors.white,
@@ -77,14 +78,18 @@ class _MyHomePageState extends State<MyHomePage> {
           MRLocalizations.of(context).title,
         ),
       ),
-      body: ListView(
+      body: Builder(
+      // Create an inner BuildContext so that the onPressed methods
+      // can refer to the Scaffold with Scaffold.of().
+      builder: (BuildContext context) {
+        return ListView(
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.add_circle_outline, size: 50),
             title: Text('dump firestore collections'),
             onTap: () {
               // debug for firestore
-              MRDataManager.instance.dumpDb();
+              MRData.instance.dumpDb();
             },
           ),
           Divider(),
@@ -92,8 +97,15 @@ class _MyHomePageState extends State<MyHomePage> {
             leading: Icon(Icons.view_comfy, size: 50),
             title: Text('New data'),
             subtitle: Text('add new data'),
-            onTap: () {
+            onTap: () async {
+                final result = await  Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => NewDataPage()),
+                );
 
+                if (result != null) {
+                  Scaffold.of(context).showSnackBar(SnackBar(content: Text(result)));
+                }
             },
           ),
           Divider(),
@@ -121,6 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Divider(),
         ],
+      );
+      }
       ),
       drawer: Drawer(
         child: ListView(
@@ -160,13 +174,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: _BottomAppBar(
-        [
-          'travel: travel',
-          'englist: english',
-          'excises: exeeee'
-          ]
-        ),
+      // bottomNavigationBar: _BottomAppBar(
+      //   [
+      //     'travel: travel',
+      //     'englist: english',
+      //     'excises: exeeee'
+      //     ]
+      //   ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add), 
         onPressed: () {},

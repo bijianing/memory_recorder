@@ -257,7 +257,39 @@ class MRLocalizations {
     const Map _lang = {
       'en': 'New data type added successfully',
       'ja': '新データ種類を追加できました',
-      'zh': '新数类型据添加成功',
+      'zh': '新数据类型添加成功',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get dataAddSucceed {
+    const Map _lang = {
+      'en': 'New data added successfully',
+      'ja': '新データを追加できました',
+      'zh': '新数据添加成功',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get dataType {
+    const Map _lang = {
+      'en': 'Data type',
+      'ja': 'データ種類',
+      'zh': '数据类型',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get fieldValidateErrorAbsence {
+    const Map _lang = {
+      'en': 'This Field is required',
+      'ja': '必須フィールドです',
+      'zh': '此字段必须输入',
+    };
+    return _lang[locale.languageCode];
+  }
+  String get choose {
+    const Map _lang = {
+      'en': 'Choose',
+      'ja': '選択',
+      'zh': '选择',
     };
     return _lang[locale.languageCode];
   }

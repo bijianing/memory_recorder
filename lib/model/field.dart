@@ -32,7 +32,7 @@ class FieldType
     }
   }
 
-  String toName() {
+  String get name {
     return _toName[this];
   }
   static String name2Id(String name) {

@@ -7,14 +7,11 @@ import 'localization.dart';
 
 //import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-
-
-
 class _FieldWidget extends StatefulWidget {
   _FieldWidget(this._data, this._itemlist);
 
   final Field _data;
-  final List <DropdownMenuItem> _itemlist;
+  final List<DropdownMenuItem> _itemlist;
 
   @override
   _FieldWidgetState createState() => _FieldWidgetState(_data, _itemlist);
@@ -23,57 +20,62 @@ class _FieldWidget extends StatefulWidget {
 class _FieldWidgetState extends State<_FieldWidget> {
   _FieldWidgetState(this._data, this._itemlist);
 
-  final double _spacdBetweenWidget = 10;
+  final double _spacdBetweenWidget = 0;
   Field _data;
-  List <DropdownMenuItem> _itemlist;
+  List<DropdownMenuItem> _itemlist;
 /* create widgets of a field */
-  List <Widget> _createWidgets() {
-    List <Widget> _list = List();
+  List<Widget> _createWidgets() {
+    List<Widget> _list = List();
 
     // Field name text field
-    _list.add(
-      TextFormField(
-        initialValue: _data.name,
-        decoration: InputDecoration(
-//          border: OutlineInputBorder(),
-          labelText: MRLocalizations.of(context).fieldNameLabel,
-          hintText: MRLocalizations.of(context).fieldNameHint,
-  //              icon: Icon(Icons.perm_identity),
+    _list.add(Row(children: <Widget>[
+      Expanded(
+          flex: 4, child: Text(MRLocalizations.of(context).fieldNameLabel)),
+      Expanded(
+        flex: 5,
+        child: TextFormField(
+          initialValue: _data.name,
+          decoration: InputDecoration(
+            hintText: MRLocalizations.of(context).fieldNameHint,
+          ),
+          onChanged: (String val) {
+            _data.name = val;
+          },
+          validator: (value) {
+            if (value.isEmpty) {
+              return MRLocalizations.of(context).fieldNameErrorEmpty;
+            }
+            if (value.length < 2) {
+              return MRLocalizations.of(context).fieldNameErrorShort;
+            }
+            return null;
+          },
         ),
-        onChanged: (String val) {
-          _data.name = val;
-        },
-        validator: (value) {
-          if (value.isEmpty) {
-            return MRLocalizations.of(context).fieldNameErrorEmpty;
-          }
-          if (value.length < 2) {
-            return MRLocalizations.of(context).fieldNameErrorShort;
-          }
-          return null;
-        },
       )
-    );
-    _list.add(SpaceBox.height(_spacdBetweenWidget));
+    ]));
+//    _list.add(SpaceBox.height(_spacdBetweenWidget));
 
     // Field type dropdown button
-    _list.add(
-      DropdownButtonFormField (
-        decoration: InputDecoration(
-//          border: OutlineInputBorder(),
-          labelText: MRLocalizations.of(context).fieldTypeLabel,
+    _list.add(Row(children: <Widget>[
+      Expanded(
+          flex: 4, child: Text(MRLocalizations.of(context).fieldTypeLabel)),
+      Expanded(
+        flex: 5,
+        child: DropdownButtonFormField(
+          isDense: true,
+          isExpanded: true,
+          value: _data.type,
+          items: _itemlist,
+          hint: Text(MRLocalizations.of(context).fieldTypeHint),
+          onChanged: (value) {
+            setState(() {
+              _data.type = value;
+            });
+          },
         ),
-        value: _data.type,
-        items: _itemlist,
-        hint: Text(MRLocalizations.of(context).fieldTypeHint),
-        onChanged: (value) {
-          setState(() {
-            _data.type = value;
-          });
-        },
-      ),
-    );
-    _list.add(SpaceBox.height(_spacdBetweenWidget));
+      )
+    ]));
+//    _list.add(SpaceBox.height(_spacdBetweenWidget));
 
     // Must checkbox
     _list.add(
@@ -83,47 +85,46 @@ class _FieldWidgetState extends State<_FieldWidget> {
         onChanged: (value) {
           setState(() {
             _data.must = value;
-          });
-        },
-        controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-      )
-    );
-    _list.add(SpaceBox.height(_spacdBetweenWidget));
+          }
+        );
+      },
+      controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+      dense: true,
+    ));
+//    _list.add(SpaceBox.height(_spacdBetweenWidget));
 
     // Decimal checkbox
     if (_data.type == FieldType.NUMBER) {
-      _list.add(
-        CheckboxListTile(
-          title: Text(MRLocalizations.of(context).fieldDecimalLabel),
-          value: _data.decimal,
-          onChanged: (value) {
-            setState(() {
-              _data.decimal = value;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-        )
-      );
-    _list.add(SpaceBox.height(_spacdBetweenWidget));
+      _list.add(CheckboxListTile(
+        title: Text(MRLocalizations.of(context).fieldDecimalLabel),
+        value: _data.decimal,
+        onChanged: (value) {
+          setState(() {
+            _data.decimal = value;
+          });
+        },
+        controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+        dense: true,
+      ));
+//      _list.add(SpaceBox.height(_spacdBetweenWidget));
     }
 
     // multiple line checkbox
     if (_data.type == FieldType.TEXT) {
-      _list.add(
-        CheckboxListTile(
-          title: Text(MRLocalizations.of(context).fieldMultiLineLabel),
-          value: _data.multiline,
-          onChanged: (value) {
-            setState(() {
-              _data.multiline = value;
-            });
-          },
-          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-        )
-      );
-    _list.add(SpaceBox.height(_spacdBetweenWidget));
+      _list.add(CheckboxListTile(
+        title: Text(MRLocalizations.of(context).fieldMultiLineLabel),
+        value: _data.multiline,
+        onChanged: (value) {
+          setState(() {
+            _data.multiline = value;
+          });
+        },
+        controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
+        dense: true,
+      ));
+//      _list.add(SpaceBox.height(_spacdBetweenWidget));
     }
-
+    
     return _list;
   }
 
@@ -131,19 +132,18 @@ class _FieldWidgetState extends State<_FieldWidget> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15.0))
+        borderRadius: BorderRadius.all(Radius.circular(15.0)),
       ),
-      elevation: 15,
-      color: Colors.green[500],
-      margin: EdgeInsets.all(2),
+      elevation: 3,
+//      color: Colors.green[500],
+      margin: EdgeInsets.all(8),
       child: Container(
-        padding: EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: _createWidgets(),
-        )
-      ),
+          padding: EdgeInsets.all(5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _createWidgets(),
+          )),
     );
   }
 }
@@ -156,31 +156,32 @@ class _FieldListWidget extends StatefulWidget {
 }
 
 class _FieldListWidgetState extends State<_FieldListWidget> {
-  
   _FieldListWidgetState(this.parent);
 
   final _NewDataTypePageState parent;
 
-  List <Field> _fields = List();
-  List <DropdownMenuItem> _dropItems;
-  
-  void _createDropItems(BuildContext context) {
-    _dropItems = FieldType.values.map(
-      (type) {
-        return DropdownMenuItem(
-          child: Text(
-            FieldType.toLocalizedName(context, type)
-          ),
-          value: type,
-        );
-      }
-    ).toList();
+  List<Field> _fields = List();
+  List<DropdownMenuItem> _dropItems;
+
+  void _createDropItems() {
+    _dropItems = FieldType.values.map((type) {
+      return DropdownMenuItem(
+        child: Text(FieldType.toLocalizedName(context, type)),
+        value: type,
+      );
+    }).toList();
   }
 
-  void _addField() {
+  void addField() {
     setState(() {
       _fields.add(Field());
     });
+  }
+
+  void addFieldIfNotExists() {
+    if (_fields.length == 0) {
+      addField();
+    }
   }
 
   void _cancelButtonHandler() {
@@ -194,63 +195,57 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
     }
     parent.formKey.currentState.save();
     name = parent.tableName;
-    DataType dataType= await MRDataManager.instance.newDataType(name, _fields);
+    bool ret = await MRData.newDataType(name, _fields);
     String userMessage;
 
     // data type exists, notify the user
-    if (dataType == null) {
+    if (ret == null) {
       userMessage = MRLocalizations.of(context).dataTypeAlreadyExist;
     } else {
       userMessage = MRLocalizations.of(context).dataTypeAddSucceed;
       Navigator.of(context).pop();
     }
 
-    Scaffold.of(context).showSnackBar(
-      SnackBar(content: Text(userMessage))
-    );
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text(userMessage)));
   }
 
-  List <Widget> _createFieldListWidget() {
+  List<Widget> _createFieldListWidget() {
     List<Widget> _list = List();
-    
-    for (int i = 0; i < _fields.length; i++) {
-      _list.add(
-        Dismissible(
-          direction: DismissDirection.endToStart,
-          key: UniqueKey(),
-          child: _FieldWidget(_fields[i], _dropItems),
-          onDismissed: (direction) {
-            setState(() {
-              _fields.removeAt(i);
-            });
 
-            Scaffold.of(context).showSnackBar(
-              SnackBar(content: Text(
-                MRLocalizations.of(context).removeFieldSnackMsg
-              ))
-            );
-          },
-          background: Container(
-            alignment: Alignment(1,0),
-            color: Colors.red,
-            child: Text(MRLocalizations.of(context).removeFieldMsg,
-              style: TextStyle(color: Colors.white),
-            ),
+    for (int i = 0; i < _fields.length; i++) {
+      _list.add(Dismissible(
+        direction: DismissDirection.endToStart,
+        key: UniqueKey(),
+        child: _FieldWidget(_fields[i], _dropItems),
+        onDismissed: (direction) {
+          setState(() {
+            _fields.removeAt(i);
+          });
+
+          Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(MRLocalizations.of(context).removeFieldSnackMsg)));
+        },
+        background: Container(
+          alignment: Alignment(1, 0),
+          color: Colors.red,
+          child: Text(
+            MRLocalizations.of(context).removeFieldMsg,
+            style: TextStyle(color: Colors.white),
           ),
-        )
-      );
-      _list.add(Divider());
+        ),
+      ));
+//      _list.add(Divider());
     }
 
     _list.add(ButtonBar(
       children: <Widget>[
         RaisedButton(
-          elevation: 10,
+//          elevation: 3,
           child: Text(MRLocalizations.of(context).cancel),
           onPressed: _fields.length > 0 ? this._cancelButtonHandler : null,
         ),
         RaisedButton(
-          elevation: 10,
+//          elevation: 3,
           child: Text(MRLocalizations.of(context).ok),
           onPressed: _fields.length > 0 ? this._okButtonHandler : null,
         ),
@@ -259,17 +254,17 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
 
     return _list;
   }
+
   @override
   Widget build(BuildContext context) {
-    if (_dropItems == null) { 
-      _createDropItems(context);
+    if (_dropItems == null) {
+      _createDropItems();
     }
     return ListView(
       children: _createFieldListWidget(),
     );
   }
 }
-
 
 class NewDataTypePage extends StatefulWidget {
   NewDataTypePage({Key key}) : super(key: key);
@@ -350,81 +345,101 @@ class _NewDataTypePageState extends State<NewDataTypePage> {
   final formKey = GlobalKey<FormState>();
   String tableName;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-//      floatingActionButton: buildSpeedDial(),
-      appBar: AppBar(
-        title: Text(
-          MRLocalizations.of(context).addDataType,
+
+  List <Widget> _bodyWidgets(BuildContext context) {
+    return [
+      Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: TextFormField(
+          decoration: InputDecoration(
+//            border: OutlineInputBorder(),
+//            labelText: MRLocalizations.of(context).tableNameLabel,
+            hintText: MRLocalizations.of(context).tableNameHint,
+          ),
+          onSaved: (value) {
+            tableName = value;
+          },
+          textAlign: TextAlign.center,
+          onFieldSubmitted: (value) {
+            if (value.length == 0) return;
+            _keyFieldListState.currentState.addField();
+          },
         ),
       ),
-      body: Form(
-        key: formKey,
-        child: Column(
+      Padding(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: Row(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-  //              border: OutlineInputBorder(),
-                labelText: MRLocalizations.of(context).tableNameLabel,
-                hintText: MRLocalizations.of(context).tableNameHint,
-  //              icon: Icon(Icons.perm_identity),
-              ),
-              onSaved: (value) {
-                tableName = value;
-              },
-            ),
-            SpaceBox.height(15),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: SpaceBox(),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(MRLocalizations.of(context).fields,
-                    style: Theme.of(context).textTheme.title,),
-                  ),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: RaisedButton(
-                      child: Text(
-                        MRLocalizations.of(context).add,
-                      ),
-  //                    color: Colors.green[400],
-                      elevation: 10,
-                      // shape: StadiumBorder(
-                      //   side: BorderSide(color: Colors.green),
-                      // ),
-                      onPressed: () {
-                        _keyFieldListState.currentState._addField();
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: SpaceBox(),
-                ),
-              ],
-            ),
-            Divider(),
             Expanded(
-              child: _FieldListWidget(
-                key: _keyFieldListState,
-                parent: this,
+              flex: 10,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  MRLocalizations.of(context).fields,
+                  style: Theme.of(context).textTheme.title,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Container(
+                alignment: Alignment.centerRight,
+                child: RaisedButton(
+                  child: Text(
+                    MRLocalizations.of(context).add,
+                  ),
+                  //                    color: Colors.green[400],
+                  elevation: 3,
+                  // shape: StadiumBorder(
+                  //   side: BorderSide(color: Colors.green),
+                  // ),
+                  onPressed: () {
+                    _keyFieldListState.currentState.addField();
+                  },
+                ),
               ),
             ),
           ],
+        ),
+      ),
+      Expanded(
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Theme.of(context).buttonColor,
+              ),
+            )
+          ),
+          child: _FieldListWidget(
+            key: _keyFieldListState,
+            parent: this,
+          ),
+        )
+      )
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Scaffold(
+        //      floatingActionButton: buildSpeedDial(),
+        appBar: AppBar(
+          title: Text(
+            MRLocalizations.of(context).addDataType,
+          ),
+        ),
+        body: Form(
+          key: formKey,
+          child: Column(
+            children: _bodyWidgets(context),
+          )
         )
       )
     );
   }
 }
-

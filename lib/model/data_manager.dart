@@ -4,34 +4,45 @@ import 'package:logging/logging.dart';
 
 import 'field.dart';
 
-class MRDataManager {
+class MRData {
   final CollectionReference _dataTypeCollection;
   final CollectionReference _dataCollection;
 
-  static MRDataManager _instance;
+  static MRData _instance;
 
   // make this a singleton class
-  MRDataManager._privateConstructor(this._dataTypeCollection, this._dataCollection);
+  MRData._privateConstructor(this._dataTypeCollection, this._dataCollection);
   
-  static MRDataManager get instance {
-    if (_instance == null) {
-      _instance = MRDataManager._privateConstructor(
-        Firestore.instance.collection('DataType'),
-        Firestore.instance.collection('Data'),
-      );
-    }
+  static MRData get instance {
+    if (_instance != null) return _instance;
+
+    _instance = MRData._privateConstructor(
+      Firestore.instance.collection('DataType'),
+      Firestore.instance.collection('Data'),
+    );
+    
 
     return _instance;
   }
 
+  /*  Get all data type name */
+  static Stream<QuerySnapshot> get dataTypeStream {
+    return instance._dataTypeCollection.snapshots();
+  }
 
+  /*  Get all data type snapshot */
+  static Future<List<DocumentSnapshot>> get dataTypes async {
+    QuerySnapshot dataTypeQuerySnapshot = await instance._dataTypeCollection.getDocuments();
+
+    return dataTypeQuerySnapshot.documents;
+  }
 
   /*  Add a new data type */
-  Future<DataType> newDataType(String name, List<Field> fields) async {
-    DocumentReference dataTypeReference = _dataTypeCollection.document(name);
+  static Future<bool> newDataType(String name, List<Field> fields) async {
+    DocumentReference dataTypeReference = instance._dataTypeCollection.document(name);
     DocumentSnapshot dataTypeSnapshot = await dataTypeReference.get();
     if (dataTypeSnapshot.exists) {
-      return null;
+      return false;
     }
 
     List<Map<String, dynamic>> fieldsList = fields.map((f) => {
@@ -39,6 +50,7 @@ class MRDataManager {
         'must': f.must,
         'multiline': f.multiline,
         'decimal': f.decimal,
+        'type': f.type.name,
     }).toList();
 
     dataTypeReference.setData({
@@ -46,7 +58,14 @@ class MRDataManager {
       'fields': fieldsList,
     });
 
-    return DataType(name, fields);
+    return true;
+  }
+  /*  Add a new data type */
+  static Future<bool> newData(String name, Map fieldValues) async {
+
+    instance._dataCollection.document(name).setData(fieldValues);
+    
+    return true;
   }
   
 
