@@ -3,25 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:memory_recorder/model/data_manager.dart';
 import 'package:memory_recorder/model/field.dart';
-import 'package:memory_recorder/view/controls.dart';
 import 'localization.dart';
 import 'package:intl/intl.dart';
 
 
 class NewDataPage extends StatefulWidget {
-  NewDataPage({Key key}) : super(key: key);
+  final String defaultType;
+  NewDataPage({Key key, this.defaultType}) : super(key: key);
 
   @override
-  _NewDataPageState createState() => _NewDataPageState(key);
+  _NewDataPageState createState() => _NewDataPageState(key, defaultType);
 }
 
 class _NewDataPageState extends State<NewDataPage> {
-  _NewDataPageState(this.key);
+  final String defaultType;
   final Key key;
   final formKey = GlobalKey<FormState>();
   DocumentSnapshot dataType;
   List <DocumentSnapshot> dataTypes;
   Map <String, dynamic> fieldValues = Map();
+
+  _NewDataPageState(this.key, this.defaultType);
 
   dynamic getDataType() {
     if (dataTypes == null) {
@@ -32,6 +34,16 @@ class _NewDataPageState extends State<NewDataPage> {
       });
 
       return DropdownButton(items: null, onChanged: null);
+    }
+
+    if (defaultType != null) {
+      List result = dataTypes.where(
+        (t) => t['name'] == defaultType
+      ).toList();
+
+      if (result.length > 0) {
+        dataType = result[0];
+      }
     }
 
     return DropdownButtonFormField(
@@ -60,7 +72,9 @@ class _NewDataPageState extends State<NewDataPage> {
     }
 
     if (field['multiline']) {
-      return TextFormField(
+      return Padding(
+        padding: EdgeInsets.only(top: 5),
+        child: TextFormField(
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             labelText: name,
@@ -69,7 +83,7 @@ class _NewDataPageState extends State<NewDataPage> {
           onSaved: (value) {
             fieldValues[name] = value;
           },
-          maxLines: null,
+          maxLines: 3,
           keyboardType: TextInputType.multiline,
           // textAlign: TextAlign.center,
           // onFieldSubmitted: (value) {
@@ -85,16 +99,16 @@ class _NewDataPageState extends State<NewDataPage> {
 
             return null;
           },
-        );
+        )
+      );
     }
     return Row(children: <Widget>[
+      Text('$name : ',
+          style: Theme.of(context).textTheme.body1,
+        ),
       Expanded(
-        flex: 3,
-        child: Text(name),
-      ),
-      Expanded(
-        flex: 5,
         child: TextFormField(
+          autofocus: false,
           // decoration: InputDecoration(
           //   border: OutlineInputBorder(),
           //   labelText: field['name'],
@@ -131,13 +145,16 @@ class _NewDataPageState extends State<NewDataPage> {
     }
 
     return Row(children: <Widget>[
+        Text('$name : ',
+          style: Theme.of(context).textTheme.subhead,
+        ),
       Expanded(
-        flex: 3,
-        child: Text(name),
-      ),
-      Expanded(
-        flex: 5,
         child: TextFormField(
+          autofocus: false,
+          decoration: InputDecoration(
+            isDense: true,
+            fillColor: Colors.green,
+          ),
           onSaved: (value) {
             fieldValues[name] = double.parse(value);
           },
@@ -164,17 +181,20 @@ class _NewDataPageState extends State<NewDataPage> {
     }
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-      Expanded(
-        flex: 3,
-        child: Text(name),
-      ),
-      Expanded(
-        flex: 5,
-        child: FlatButton(
-          child: Text(DateFormat.yMMMd().format(fieldValues[name])),
-          onPressed: () async {
+        Text('$name : '),
+        GestureDetector(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Text(
+              DateFormat.yMMMd().format(fieldValues[name]),
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          onTap: () async {
             final picked = await showDatePicker(
               context: context,
               initialDate: fieldValues[name],
@@ -187,10 +207,9 @@ class _NewDataPageState extends State<NewDataPage> {
               });
             }
           },
-          
         ),
-      ),
-    ]);
+      ]
+    );
   }
 
   Widget getFields() {

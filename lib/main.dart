@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-import 'view/controls.dart';
+
 import 'view/new_data_type.dart';
 import 'view/new_data.dart';
 import 'view/localization.dart';
+import 'view/floating_add_button.dart';
 import 'model/data_manager.dart';
 
 void main() => runApp(MyApp());
@@ -61,9 +61,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  
+  GlobalKey<FloatingAddButtonState> _keyFloatingActionButton = GlobalKey();
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      MRData.dataTypes;
+      MRData.dataTypeChangeListenerKey = _keyFloatingActionButton;
+    });
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -114,22 +119,23 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('New Data type'),
             subtitle: Text('add new data type'),
             onTap: () async {
-              print("Test firebase: #### Add a New data type ####\n");
-              CollectionReference dataTypeCollection = Firestore.instance.collection('DataTypes');
-              QuerySnapshot dataTypeSnapshot = await dataTypeCollection.getDocuments();
-              int idNumber = dataTypeSnapshot.documents.length + 1;
-              String typeName = 'datatype$idNumber';
-              dataTypeCollection.document(typeName).setData({
-                'name' : 'datatype$idNumber',
-                'fields' : null
-              });
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => NewDataTypePage()),
+                );
             },
           ),
           Divider(),
           ListTile(
             leading: Icon(Icons.settings, size: 50),
-            title: Text('Settings'),
-            subtitle: Text('change settings'),
+            title: Text('Test'),
+            subtitle: Text('testing'),
+            onTap: () async {
+              // await  Navigator.push(
+              //   context, 
+              //   MaterialPageRoute(builder: (context) => DataTableDemo()),
+              // );
+            },
           ),
           Divider(),
         ],
@@ -181,16 +187,12 @@ class _MyHomePageState extends State<MyHomePage> {
       //     'excises: exeeee'
       //     ]
       //   ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add), 
-        onPressed: () {},
-        mini: true,
-      ),
+      floatingActionButton: FloatingAddButton(key: _keyFloatingActionButton),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
     );
   }
 }
-
+/*
 class _BottomAppBarButton extends StatelessWidget {
   const _BottomAppBarButton(this._text, this._table);
 
@@ -250,7 +252,5 @@ class _BottomAppBar extends StatelessWidget {
     );
   }
 }
-
-
-
+*/
 

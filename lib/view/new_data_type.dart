@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:memory_recorder/model/data_manager.dart';
 import 'package:memory_recorder/model/field.dart';
-import 'package:memory_recorder/view/controls.dart';
 import 'localization.dart';
-
-//import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class _FieldWidget extends StatefulWidget {
   _FieldWidget(this._data, this._itemlist);
@@ -20,7 +17,6 @@ class _FieldWidget extends StatefulWidget {
 class _FieldWidgetState extends State<_FieldWidget> {
   _FieldWidgetState(this._data, this._itemlist);
 
-  final double _spacdBetweenWidget = 0;
   Field _data;
   List<DropdownMenuItem> _itemlist;
 /* create widgets of a field */
@@ -34,9 +30,12 @@ class _FieldWidgetState extends State<_FieldWidget> {
       Expanded(
         flex: 5,
         child: TextFormField(
+          autocorrect: false,
           initialValue: _data.name,
           decoration: InputDecoration(
+            isDense: true,
             hintText: MRLocalizations.of(context).fieldNameHint,
+            contentPadding: EdgeInsets.only(bottom: 2, top: 2),
           ),
           onChanged: (String val) {
             _data.name = val;
@@ -53,29 +52,32 @@ class _FieldWidgetState extends State<_FieldWidget> {
         ),
       )
     ]));
-//    _list.add(SpaceBox.height(_spacdBetweenWidget));
-
+    
     // Field type dropdown button
     _list.add(Row(children: <Widget>[
       Expanded(
           flex: 4, child: Text(MRLocalizations.of(context).fieldTypeLabel)),
       Expanded(
         flex: 5,
-        child: DropdownButtonFormField(
+        child: DropdownButtonFormField<FieldType>(
+          // decoration: InputDecoration(
+          //   contentPadding: EdgeInsets.only(left: 0, bottom: 0, top: 0),
+          //   border: InputBorder.none,
+          // ),
           isDense: true,
           isExpanded: true,
           value: _data.type,
           items: _itemlist,
           hint: Text(MRLocalizations.of(context).fieldTypeHint),
           onChanged: (value) {
-            setState(() {
-              _data.type = value;
-            });
+            _data.type = value;
+            // setState(() {
+            //   _data.type = value;
+            // });
           },
         ),
       )
     ]));
-//    _list.add(SpaceBox.height(_spacdBetweenWidget));
 
     // Must checkbox
     _list.add(
@@ -91,7 +93,6 @@ class _FieldWidgetState extends State<_FieldWidget> {
       controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
       dense: true,
     ));
-//    _list.add(SpaceBox.height(_spacdBetweenWidget));
 
     // Decimal checkbox
     if (_data.type == FieldType.NUMBER) {
@@ -106,7 +107,6 @@ class _FieldWidgetState extends State<_FieldWidget> {
         controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
         dense: true,
       ));
-//      _list.add(SpaceBox.height(_spacdBetweenWidget));
     }
 
     // multiple line checkbox
@@ -122,7 +122,6 @@ class _FieldWidgetState extends State<_FieldWidget> {
         controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
         dense: true,
       ));
-//      _list.add(SpaceBox.height(_spacdBetweenWidget));
     }
     
     return _list;
@@ -150,7 +149,7 @@ class _FieldWidgetState extends State<_FieldWidget> {
 
 class _FieldListWidget extends StatefulWidget {
   _FieldListWidget({Key key, this.parent}) : super(key: key);
-  final _NewDataTypePageState parent;
+  final NewDataTypePage parent;
   @override
   _FieldListWidgetState createState() => _FieldListWidgetState(parent);
 }
@@ -158,7 +157,7 @@ class _FieldListWidget extends StatefulWidget {
 class _FieldListWidgetState extends State<_FieldListWidget> {
   _FieldListWidgetState(this.parent);
 
-  final _NewDataTypePageState parent;
+  final NewDataTypePage parent;
 
   List<Field> _fields = List();
   List<DropdownMenuItem> _dropItems;
@@ -194,7 +193,7 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
       return;
     }
     parent.formKey.currentState.save();
-    name = parent.tableName;
+    name = parent.tableNameTextEditController.text;
     bool ret = await MRData.newDataType(name, _fields);
     String userMessage;
 
@@ -222,8 +221,15 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
             _fields.removeAt(i);
           });
 
-          Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(MRLocalizations.of(context).removeFieldSnackMsg)));
+          Scaffold.of(context).removeCurrentSnackBar();
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(MRLocalizations.of(context).removeFieldSnackMsg),
+              action: SnackBarAction(label: 'OK', onPressed: () {
+                Scaffold.of(context).removeCurrentSnackBar();
+              })
+            ),
+          );
         },
         background: Container(
           alignment: Alignment(1, 0),
@@ -266,84 +272,12 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
   }
 }
 
-class NewDataTypePage extends StatefulWidget {
+class NewDataTypePage extends StatelessWidget {
   NewDataTypePage({Key key}) : super(key: key);
-
-  @override
-  _NewDataTypePageState createState() => _NewDataTypePageState(key);
-}
-
-class _NewDataTypePageState extends State<NewDataTypePage> {
-  _NewDataTypePageState(this.key);
-  final Key key;
-  /*
-  ScrollController scrollController;
-  bool dialVisible = true;
-
-  @override
-  void initState() {
-    super.initState();
-
-    scrollController = ScrollController()
-      ..addListener(() {
-        setDialVisible(scrollController.position.userScrollDirection ==
-            ScrollDirection.forward);
-      });
-  }
-
-  void setDialVisible(bool value) {
-    setState(() {
-      dialVisible = value;
-    });
-  }
-
-  SpeedDial buildSpeedDial() {
-    return SpeedDial(
-      marginBottom: 100,
-      animatedIcon: AnimatedIcons.menu_close,
-      animatedIconTheme: IconThemeData(size: 22.0),
-      // child: Icon(Icons.add),
-      onOpen: () => print('OPENING DIAL'),
-      onClose: () => print('DIAL CLOSED'),
-      visible: dialVisible,
-      curve: Curves.bounceIn,
-      children: [
-        SpeedDialChild(
-          child: Icon(Icons.accessibility, color: Colors.white),
-          backgroundColor: Colors.deepOrange,
-          onTap: () => print('FIRST CHILD'),
-          label: 'First Child',
-          labelStyle: TextStyle(fontWeight: FontWeight.w500),
-          labelBackgroundColor: Colors.deepOrangeAccent,
-        ),
-        SpeedDialChild(
-          child: Icon(Icons.brush, color: Colors.white),
-          backgroundColor: Colors.green,
-          onTap: () => print('SECOND CHILD'),
-          label: 'Second Child',
-          labelStyle: TextStyle(fontWeight: FontWeight.w500),
-          labelBackgroundColor: Colors.green,
-        ),
-        SpeedDialChild(
-          child: Icon(Icons.keyboard_voice, color: Colors.white),
-          backgroundColor: Colors.blue,
-          onTap: () => print('THIRD CHILD'),
-          labelWidget: Container(
-            color: Colors.blue,
-            margin: EdgeInsets.only(right: 10),
-            padding: EdgeInsets.all(6),
-            child: Text('Custom Label Widget'),
-          ),
-        ),
-      ],
-    );
-  }
-
-  */
 
   final _keyFieldListState = GlobalKey<_FieldListWidgetState>();
   final formKey = GlobalKey<FormState>();
-  String tableName;
+  final tableNameTextEditController = TextEditingController();
 
 
   List <Widget> _bodyWidgets(BuildContext context) {
@@ -351,14 +285,13 @@ class _NewDataTypePageState extends State<NewDataTypePage> {
       Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
         child: TextFormField(
+          autocorrect: false,
           decoration: InputDecoration(
 //            border: OutlineInputBorder(),
 //            labelText: MRLocalizations.of(context).tableNameLabel,
             hintText: MRLocalizations.of(context).tableNameHint,
           ),
-          onSaved: (value) {
-            tableName = value;
-          },
+          controller: tableNameTextEditController,
           textAlign: TextAlign.center,
           onFieldSubmitted: (value) {
             if (value.length == 0) return;
