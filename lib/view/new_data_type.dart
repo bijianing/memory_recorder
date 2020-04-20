@@ -17,6 +17,23 @@ class _FieldWidget extends StatefulWidget {
 class _FieldWidgetState extends State<_FieldWidget> {
   _FieldWidgetState(this._data, this._itemlist);
 
+  FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    // _focusNode.addListener(() {
+    //   print("Has focus: ${_focusNode.hasFocus}");
+    // });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   Field _data;
   List<DropdownMenuItem> _itemlist;
 /* create widgets of a field */
@@ -30,10 +47,10 @@ class _FieldWidgetState extends State<_FieldWidget> {
       Expanded(
         flex: 5,
         child: TextFormField(
-          autocorrect: false,
-          initialValue: _data.name,
+          focusNode: _focusNode,
+          autofocus: true,
           decoration: InputDecoration(
-            isDense: true,
+            // isDense: true,
             hintText: MRLocalizations.of(context).fieldNameHint,
             contentPadding: EdgeInsets.only(bottom: 2, top: 2),
           ),
@@ -71,9 +88,9 @@ class _FieldWidgetState extends State<_FieldWidget> {
           hint: Text(MRLocalizations.of(context).fieldTypeHint),
           onChanged: (value) {
             _data.type = value;
-            // setState(() {
-            //   _data.type = value;
-            // });
+            setState(() {
+              _data.type = value;
+            });
           },
         ),
       )
@@ -89,6 +106,7 @@ class _FieldWidgetState extends State<_FieldWidget> {
             _data.must = value;
           }
         );
+        if (_focusNode.hasFocus) _focusNode.unfocus();
       },
       controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
       dense: true,
@@ -103,6 +121,7 @@ class _FieldWidgetState extends State<_FieldWidget> {
           setState(() {
             _data.decimal = value;
           });
+          if (_focusNode.hasFocus) _focusNode.unfocus();
         },
         controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
         dense: true,
@@ -118,6 +137,7 @@ class _FieldWidgetState extends State<_FieldWidget> {
           setState(() {
             _data.multiline = value;
           });
+          if (_focusNode.hasFocus) _focusNode.unfocus();
         },
         controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
         dense: true,
@@ -149,7 +169,7 @@ class _FieldWidgetState extends State<_FieldWidget> {
 
 class _FieldListWidget extends StatefulWidget {
   _FieldListWidget({Key key, this.parent}) : super(key: key);
-  final NewDataTypePage parent;
+  final NewDataTypePageState parent;
   @override
   _FieldListWidgetState createState() => _FieldListWidgetState(parent);
 }
@@ -157,7 +177,7 @@ class _FieldListWidget extends StatefulWidget {
 class _FieldListWidgetState extends State<_FieldListWidget> {
   _FieldListWidgetState(this.parent);
 
-  final NewDataTypePage parent;
+  final NewDataTypePageState parent;
 
   List<Field> _fields = List();
   List<DropdownMenuItem> _dropItems;
@@ -232,7 +252,7 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
           );
         },
         background: Container(
-          alignment: Alignment(1, 0),
+          alignment: Alignment(0, 0),
           color: Colors.red,
           child: Text(
             MRLocalizations.of(context).removeFieldMsg,
@@ -272,12 +292,33 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
   }
 }
 
-class NewDataTypePage extends StatelessWidget {
-  NewDataTypePage({Key key}) : super(key: key);
+class NewDataTypePage extends StatefulWidget {
+  @override
+  NewDataTypePageState createState() => NewDataTypePageState();
+}
+
+class NewDataTypePageState extends State<NewDataTypePage> {
 
   final _keyFieldListState = GlobalKey<_FieldListWidgetState>();
   final formKey = GlobalKey<FormState>();
   final tableNameTextEditController = TextEditingController();
+
+  FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    // _focusNode.addListener(() {
+    //   print("Has focus: ${_focusNode.hasFocus}");
+    // });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
 
   List <Widget> _bodyWidgets(BuildContext context) {
@@ -285,7 +326,8 @@ class NewDataTypePage extends StatelessWidget {
       Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
         child: TextFormField(
-          autocorrect: false,
+          focusNode: _focusNode,
+          autofocus: true,
           decoration: InputDecoration(
 //            border: OutlineInputBorder(),
 //            labelText: MRLocalizations.of(context).tableNameLabel,
@@ -327,6 +369,7 @@ class NewDataTypePage extends StatelessWidget {
                   //   side: BorderSide(color: Colors.green),
                   // ),
                   onPressed: () {
+                    if (_focusNode.hasFocus) _focusNode.unfocus();
                     _keyFieldListState.currentState.addField();
                   },
                 ),
@@ -357,7 +400,7 @@ class NewDataTypePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
         //      floatingActionButton: buildSpeedDial(),

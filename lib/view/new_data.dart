@@ -272,7 +272,7 @@ class _NewDataPageState extends State<NewDataPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
         //      floatingActionButton: buildSpeedDial(),
