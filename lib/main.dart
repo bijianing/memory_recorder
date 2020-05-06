@@ -6,9 +6,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'view/new_data_type.dart';
 import 'view/new_data.dart';
+import 'view/view_data.dart';
 import 'view/localization.dart';
 import 'view/floating_add_button.dart';
 import 'model/data_manager.dart';
+import 'view/chip_select.dart';
 
 void main() => runApp(MyApp());
 
@@ -90,18 +92,9 @@ class _MyHomePageState extends State<MyHomePage> {
         return ListView(
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.add_circle_outline, size: 50),
-            title: Text('dump firestore collections'),
-            onTap: () {
-              // debug for firestore
-              MRData.instance.dumpDb();
-            },
-          ),
-          Divider(),
-          ListTile(
             leading: Icon(Icons.view_comfy, size: 50),
-            title: Text('New data'),
-            subtitle: Text('add new data'),
+            title: Text(MRLocalizations.of(context).addData),
+            subtitle: Text(MRLocalizations.of(context).addDataDescription),
             onTap: () async {
                 final result = await  Navigator.push(
                   context, 
@@ -113,11 +106,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
             },
           ),
-          Divider(),
           ListTile(
             leading: Icon(Icons.add_to_photos, size: 50),
-            title: Text('New Data type'),
-            subtitle: Text('add new data type'),
+            title: Text(MRLocalizations.of(context).addDataType),
+            subtitle: Text(MRLocalizations.of(context).addDataTypeDescription),
             onTap: () async {
                 Navigator.push(
                   context, 
@@ -125,19 +117,37 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
             },
           ),
-          Divider(),
+          ListTile(
+            leading: Icon(Icons.settings, size: 50),
+            title: Text(MRLocalizations.of(context).viewData),
+            subtitle: Text(MRLocalizations.of(context).viewDataDescription),
+            onTap: () async {
+              await  Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => ViewDataPage()),
+              );
+            },
+          ),
           ListTile(
             leading: Icon(Icons.settings, size: 50),
             title: Text('Test'),
             subtitle: Text('testing'),
             onTap: () async {
-              // await  Navigator.push(
-              //   context, 
-              //   MaterialPageRoute(builder: (context) => DataTableDemo()),
-              // );
+              await  Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => ChipSelectDemo()),
+              );
             },
           ),
-          Divider(),
+          ListTile(
+            leading: Icon(Icons.add_circle_outline, size: 50),
+            title: Text('dump firestore collections'),
+            subtitle: Text('add new data'),
+            onTap: () {
+              // debug for firestore
+              MRData.instance.dumpDb();
+            },
+          ),
         ],
       );
       }

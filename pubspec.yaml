@@ -51,6 +51,9 @@ flutter:
         - asset: fonts/MPLUSRounded1c-Regular.ttf
           style: italic
 
+  assets:
+    - assets/images/sea.jpg
+    
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

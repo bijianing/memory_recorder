@@ -30,7 +30,7 @@ class MRLocalizations {
     return Localizations.of<MRLocalizations>(context, MRLocalizations);
   }
   String get title {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Memory Recorder',
       'ja': 'メモリ レコーダー',
       'zh': '回忆记录器',
@@ -38,7 +38,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get setting {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Settings',
       'ja': '設定',
       'zh': '设置',
@@ -46,31 +46,55 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get viewData {
-    const Map _lang = {
+    Map _lang = {
       'en': 'View Data',
       'ja': 'データ表示',
       'zh': '查看数据',
     };
     return _lang[locale.languageCode];
   }
+  String get viewDataDescription {
+    Map _lang = {
+      'en': 'view added data',
+      'ja': '追加済のデータを表示',
+      'zh': '查看已添加数据',
+    };
+    return _lang[locale.languageCode];
+  }
   String get addData {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Add Data',
       'ja': 'データ追加',
       'zh': '添加数据',
     };
     return _lang[locale.languageCode];
   }
+  String get addDataDescription {
+    Map _lang = {
+      'en': 'add a new data',
+      'ja': '新データを追加します',
+      'zh': '添加一个新数据',
+    };
+    return _lang[locale.languageCode];
+  }
   String get addDataType {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Add Data Type',
       'ja': 'データ種類追加',
       'zh': '添加数据类型',
     };
     return _lang[locale.languageCode];
   }
+  String get addDataTypeDescription {
+    Map _lang = {
+      'en': 'add a new data type',
+      'ja': '新データ種類を追加します',
+      'zh': '添加一个新数据类型',
+    };
+    return _lang[locale.languageCode];
+  }
   String get name {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Name',
       'ja': '名前',
       'zh': '名字',
@@ -78,7 +102,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fields {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Fields',
       'ja': 'フィールド',
       'zh': '字段',
@@ -86,7 +110,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldNameErrorEmpty {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Please enter field name',
       'ja': 'フィールド名を入力してください',
       'zh': '请输入字段名',
@@ -94,7 +118,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldNameErrorShort {
-    const Map _lang = {
+    Map _lang = {
       'en': 'field name is too short',
       'ja': 'フィールド名が短い',
       'zh': '字段名太短',
@@ -102,7 +126,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get add {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Add',
       'ja': '追加',
       'zh': '添加',
@@ -110,7 +134,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get tableNameLabel {
-    const Map _lang = {
+    Map _lang = {
       'en': 'New data type name',
       'ja': '新データ種類名',
       'zh': '新数据类型名',
@@ -118,7 +142,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get tableNameHint {
-    const Map _lang = {
+    Map _lang = {
       'en': 'New data type name',
       'ja': '新データ種類名',
       'zh': '新数据类型名',
@@ -126,7 +150,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldTypeText {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Text',
       'ja': 'テキスト',
       'zh': '文本',
@@ -134,7 +158,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldTypeNumber {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Number',
       'ja': '数字',
       'zh': '数字',
@@ -142,7 +166,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldTypePlace {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Place',
       'ja': '場所',
       'zh': '地点',
@@ -150,7 +174,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldTypeTime {
-    const Map _lang = {
+    Map _lang = {
       'en': 'DateTime',
       'ja': '日時',
       'zh': '日期时间',
@@ -158,7 +182,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldNameLabel {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Field name',
       'ja': 'フィールド名',
       'zh': '字段名',
@@ -166,7 +190,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldNameHint {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Field name',
       'ja': 'フィールド名',
       'zh': '字段名',
@@ -174,7 +198,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldTypeLabel {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Field type',
       'ja': 'フィールド種類',
       'zh': '字段类型',
@@ -182,7 +206,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldTypeHint {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Field type',
       'ja': 'フィールド種類',
       'zh': '字段类型',
@@ -190,7 +214,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldMustLabel {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Must field',
       'ja': '必須フィールド',
       'zh': '必须字段',
@@ -198,7 +222,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldDecimalLabel {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Decimal',
       'ja': '小数',
       'zh': '小数',
@@ -206,7 +230,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldMultiLineLabel {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Multiple line',
       'ja': '複数行',
       'zh': '多行',
@@ -214,7 +238,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get cancel {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Cancel',
       'ja': 'キャンセル',
       'zh': '取消',
@@ -222,7 +246,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get ok {
-    const Map _lang = {
+    Map _lang = {
       'en': 'OK',
       'ja': 'ＯＫ',
       'zh': '确定',
@@ -230,23 +254,23 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get removeFieldMsg {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Remove this field',
       'ja': 'このフィールドを削除',
       'zh': '删除此字段',
     };
     return _lang[locale.languageCode];
   }
-  String get removeFieldSnackMsg {
-    const Map _lang = {
-      'en': 'Field removed',
-      'ja': 'フィールドを削除しました',
-      'zh': '删除此字段一个字段',
+  String removeFieldSnackMsg(Object fieldName) {
+    Map _lang = {
+      'en': 'Field "$fieldName" removed',
+      'ja': 'フィールド"$fieldName"を削除しました',
+      'zh': '字段"$fieldName"被删除',
     };
     return _lang[locale.languageCode];
   }
   String get dataTypeAlreadyExist {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Data name already exists',
       'ja': 'データ名が存在しています',
       'zh': '数据名已存在',
@@ -254,7 +278,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get dataTypeAddSucceed {
-    const Map _lang = {
+    Map _lang = {
       'en': 'New data type added successfully',
       'ja': '新データ種類を追加できました',
       'zh': '新数据类型添加成功',
@@ -262,7 +286,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get dataAddSucceed {
-    const Map _lang = {
+    Map _lang = {
       'en': 'New data added successfully',
       'ja': '新データを追加できました',
       'zh': '新数据添加成功',
@@ -270,7 +294,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get dataType {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Data type',
       'ja': 'データ種類',
       'zh': '数据类型',
@@ -278,7 +302,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get fieldValidateErrorAbsence {
-    const Map _lang = {
+    Map _lang = {
       'en': 'This Field is required',
       'ja': '必須フィールドです',
       'zh': '此字段必须输入',
@@ -286,7 +310,7 @@ class MRLocalizations {
     return _lang[locale.languageCode];
   }
   String get choose {
-    const Map _lang = {
+    Map _lang = {
       'en': 'Choose',
       'ja': '選択',
       'zh': '选择',

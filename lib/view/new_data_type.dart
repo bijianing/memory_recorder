@@ -5,17 +5,19 @@ import 'package:memory_recorder/model/field.dart';
 import 'localization.dart';
 
 class _FieldWidget extends StatefulWidget {
-  _FieldWidget(this._data, this._itemlist);
+  _FieldWidget(this._data, this._itemlist, this._tapListeners);
 
   final Field _data;
   final List<DropdownMenuItem> _itemlist;
+  final List<void Function()> _tapListeners;
 
   @override
-  _FieldWidgetState createState() => _FieldWidgetState(_data, _itemlist);
+  _FieldWidgetState createState() => _FieldWidgetState(_data, _itemlist, _tapListeners);
 }
 
 class _FieldWidgetState extends State<_FieldWidget> {
-  _FieldWidgetState(this._data, this._itemlist);
+  _FieldWidgetState(this._data, this._itemlist, this._tapListeners);
+  List<void Function()> _tapListeners;
 
   FocusNode _focusNode;
 
@@ -23,6 +25,9 @@ class _FieldWidgetState extends State<_FieldWidget> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    _tapListeners.add(() {
+      if (_focusNode.hasFocus) _focusNode.unfocus();
+    });
     // _focusNode.addListener(() {
     //   print("Has focus: ${_focusNode.hasFocus}");
     // });
@@ -235,21 +240,21 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
       _list.add(Dismissible(
         direction: DismissDirection.endToStart,
         key: UniqueKey(),
-        child: _FieldWidget(_fields[i], _dropItems),
+        child: _FieldWidget(_fields[i], _dropItems, parent.tapListeners),
         onDismissed: (direction) {
-          setState(() {
-            _fields.removeAt(i);
-          });
-
           Scaffold.of(context).removeCurrentSnackBar();
           Scaffold.of(context).showSnackBar(
             SnackBar(
-              content: Text(MRLocalizations.of(context).removeFieldSnackMsg),
+              content: Text(MRLocalizations.of(context).removeFieldSnackMsg(_fields[i].name)),
               action: SnackBarAction(label: 'OK', onPressed: () {
                 Scaffold.of(context).removeCurrentSnackBar();
               })
             ),
           );
+
+          setState(() {
+            _fields.removeAt(i);
+          });
         },
         background: Container(
           alignment: Alignment(0, 0),
@@ -304,11 +309,15 @@ class NewDataTypePageState extends State<NewDataTypePage> {
   final tableNameTextEditController = TextEditingController();
 
   FocusNode _focusNode;
+  List<void Function()> tapListeners;
 
   @override
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    tapListeners = [() {
+      if (_focusNode.hasFocus) {_focusNode.unfocus();}
+    }];
     // _focusNode.addListener(() {
     //   print("Has focus: ${_focusNode.hasFocus}");
     // });
@@ -400,7 +409,9 @@ class NewDataTypePageState extends State<NewDataTypePage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        tapListeners.forEach((f){
+          f();
+        });
       },
       child: Scaffold(
         //      floatingActionButton: buildSpeedDial(),
