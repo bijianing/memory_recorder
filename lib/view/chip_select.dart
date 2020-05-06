@@ -35,6 +35,7 @@ class _AnimatedChip extends StatelessWidget {
   final _AnimationRange animationInterval;
   final _AnimationRange postionRange;
   final GlobalKey chipKey = GlobalKey();
+  final double elevation;
 
   _AnimatedChip(
     this.animationController,
@@ -46,6 +47,7 @@ class _AnimatedChip extends StatelessWidget {
       Key key,
       this.selected : false,
       this.onSelected,
+      this.elevation: 0,
     }
   ):super(key: key);
 
@@ -68,6 +70,7 @@ class _AnimatedChip extends StatelessWidget {
       ,
       child: ChoiceChip(
         key: chipKey,
+        elevation: elevation,
         label: Text(label), 
         selected: selected,
         onSelected: (value) {
@@ -93,20 +96,20 @@ class _AnimatedChip extends StatelessWidget {
 
 enum _AnimationType {
   None,
-  InitDisplay,
-  InitDisplayPrepare,
-  Selected,
-  UnSelected,
+  AnimationPrepare,
+  DoAnimation,
 }
 
 class ChipSelect extends StatefulWidget {
   final List<String> initChipLabels;
   final double padding;
+  final double chipElevation;
 
   ChipSelect({
     Key key,
     this.initChipLabels,
     this.padding,
+    this.chipElevation: 0,
   }): super(key: key);
 
   @override
@@ -131,8 +134,8 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
       vsync: this,
     );
 
-    // _controller.addStatusListener(chipAnimationStatusListener);
-    // _controller.addListener(chipAnimationListener);
+    // _controller.addStatusListener(_animationStatusListener);
+    // _controller.addListener(_animationListener);
 
     if (widget.initChipLabels != null) {
       _chipList = widget.initChipLabels.map(
@@ -147,7 +150,7 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
     } else {
       _chipList = [];
     }
-    _animation = _AnimationType.InitDisplayPrepare;
+    _animation = _AnimationType.AnimationPrepare;
 
   }
 
@@ -157,23 +160,13 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
     _controller.dispose();
   }
 
-  void chipAnimationStatusListener(AnimationStatus status) {
-    print("Chip Status:$status");
-
-  }
-  void chipAnimationListener() {
-   print("Chip listener:-------------------------------");
-
-  }
+  // void _animationStatusListener(AnimationStatus status) {
+  //   print("Chip Status:$status");
+  // }
+  // void _animationListener() {
+  //  print("Chip listener:-------------------------------");
+  // }
   
-  void selectChanged(int index, bool value) {
-    print('select changed, index:$index, value:$value');
-  }
-
-
-  void initDisplayPrepare() {
-    doNewAnimation('', false);
-  }
 
   void afterBuild(_) {
     if (_height == null || _height == 0) {
@@ -185,22 +178,14 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
       case _AnimationType.None:
         break;
 
-      case _AnimationType.InitDisplayPrepare:
-        initDisplayPrepare();
-        _animation = _AnimationType.InitDisplay;
+      case _AnimationType.AnimationPrepare:
+        doNewAnimation('', false);
+        _animation = _AnimationType.DoAnimation;
         break;
 
-      case _AnimationType.InitDisplay:
+      case _AnimationType.DoAnimation:
         _controller.forward();
         _animation = _AnimationType.None;
-        break;
-
-      case _AnimationType.Selected:
-        _controller.forward();
-        _animation = _AnimationType.None;
-        break;
-      
-      case _AnimationType.UnSelected:
         break;
     }
   }
@@ -306,8 +291,9 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
       interval,
       positionRange,
       selected: selected,
+      elevation: widget.chipElevation,
       onSelected: (value) {
-        _animation = _AnimationType.Selected;
+        _animation = _AnimationType.DoAnimation;
         _controller.reset();
         doNewAnimation(label, value);
       },
@@ -337,6 +323,7 @@ class _ChipSelectDemoState extends State<ChipSelectDemo> {
       body: ChipSelect(
         initChipLabels: <String>['abc', 'def', 'English', 'excise', 'moring', 'llkjkdf', 'nihao', '成功', '失敗'],
         padding: 0.05,
+        chipElevation: 3,
       )
     );
 
