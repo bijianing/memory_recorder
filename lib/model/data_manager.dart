@@ -65,12 +65,11 @@ class MRData {
 
   /*  Add a new data type */
   static Future<bool> newDataType(String name, List<Field> fields) async {
-    DocumentReference dataTypeReference = instance._dataTypeCollection.document(name);
-    DocumentSnapshot dataTypeSnapshot = await dataTypeReference.get();
-    if (dataTypeSnapshot.exists) {
+    QuerySnapshot query = await instance._dataTypeCollection.where('name', isEqualTo: name).getDocuments();
+    if (query.documents.length > 0) {
       return false;
     }
-
+    
     List<Map<String, dynamic>> fieldsList = fields.map((f) => {
         'name': f.name,
         'must': f.must,
@@ -79,7 +78,7 @@ class MRData {
         'type': f.type.name,
     }).toList();
 
-    dataTypeReference.setData({
+    instance._dataTypeCollection.add({
       'name': name,
       'fields': fieldsList,
       '_timestamp' : DateTime.now(),

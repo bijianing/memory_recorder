@@ -12,20 +12,17 @@ class _FieldWidget extends StatefulWidget {
   final List<void Function()> _tapListeners;
 
   @override
-  _FieldWidgetState createState() => _FieldWidgetState(_data, _itemlist, _tapListeners);
+  _FieldWidgetState createState() => _FieldWidgetState();
 }
 
 class _FieldWidgetState extends State<_FieldWidget> {
-  _FieldWidgetState(this._data, this._itemlist, this._tapListeners);
-  List<void Function()> _tapListeners;
-
   FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _focusNode = FocusNode();
-    _tapListeners.add(() {
+    widget._tapListeners.add(() {
       if (_focusNode.hasFocus) _focusNode.unfocus();
     });
     // _focusNode.addListener(() {
@@ -39,8 +36,6 @@ class _FieldWidgetState extends State<_FieldWidget> {
     super.dispose();
   }
 
-  Field _data;
-  List<DropdownMenuItem> _itemlist;
 /* create widgets of a field */
   List<Widget> _createWidgets() {
     List<Widget> _list = List();
@@ -53,14 +48,14 @@ class _FieldWidgetState extends State<_FieldWidget> {
         flex: 5,
         child: TextFormField(
           focusNode: _focusNode,
-          autofocus: true,
+//          autofocus: true,
           decoration: InputDecoration(
             // isDense: true,
             hintText: MRLocalizations.of(context).fieldNameHint,
             contentPadding: EdgeInsets.only(bottom: 2, top: 2),
           ),
           onChanged: (String val) {
-            _data.name = val;
+            widget._data.name = val;
           },
           validator: (value) {
             if (value.isEmpty) {
@@ -88,13 +83,13 @@ class _FieldWidgetState extends State<_FieldWidget> {
           // ),
           isDense: true,
           isExpanded: true,
-          value: _data.type,
-          items: _itemlist,
+          value: widget._data.type,
+          items: widget._itemlist,
           hint: Text(MRLocalizations.of(context).fieldTypeHint),
           onChanged: (value) {
-            _data.type = value;
+            widget._data.type = value;
             setState(() {
-              _data.type = value;
+              widget._data.type = value;
             });
           },
         ),
@@ -105,28 +100,28 @@ class _FieldWidgetState extends State<_FieldWidget> {
     _list.add(
       CheckboxListTile(
         title: Text(MRLocalizations.of(context).fieldMustLabel),
-        value: _data.must,
+        value: widget._data.must,
         onChanged: (value) {
           setState(() {
-            _data.must = value;
+            widget._data.must = value;
           }
         );
-        if (_focusNode.hasFocus) _focusNode.unfocus();
+        widget._tapListeners.forEach((f){ f(); });
       },
       controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
       dense: true,
     ));
 
     // Decimal checkbox
-    if (_data.type == FieldType.NUMBER) {
+    if (widget._data.type == FieldType.NUMBER) {
       _list.add(CheckboxListTile(
         title: Text(MRLocalizations.of(context).fieldDecimalLabel),
-        value: _data.decimal,
+        value: widget._data.decimal,
         onChanged: (value) {
           setState(() {
-            _data.decimal = value;
+            widget._data.decimal = value;
           });
-          if (_focusNode.hasFocus) _focusNode.unfocus();
+          widget._tapListeners.forEach((f){ f(); });
         },
         controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
         dense: true,
@@ -134,15 +129,15 @@ class _FieldWidgetState extends State<_FieldWidget> {
     }
 
     // multiple line checkbox
-    if (_data.type == FieldType.TEXT) {
+    if (widget._data.type == FieldType.TEXT) {
       _list.add(CheckboxListTile(
         title: Text(MRLocalizations.of(context).fieldMultiLineLabel),
-        value: _data.multiline,
+        value: widget._data.multiline,
         onChanged: (value) {
           setState(() {
-            _data.multiline = value;
+            widget._data.multiline = value;
           });
-          if (_focusNode.hasFocus) _focusNode.unfocus();
+          widget._tapListeners.forEach((f){ f(); });
         },
         controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
         dense: true,
@@ -176,13 +171,10 @@ class _FieldListWidget extends StatefulWidget {
   _FieldListWidget({Key key, this.parent}) : super(key: key);
   final NewDataTypePageState parent;
   @override
-  _FieldListWidgetState createState() => _FieldListWidgetState(parent);
+  _FieldListWidgetState createState() => _FieldListWidgetState();
 }
 
 class _FieldListWidgetState extends State<_FieldListWidget> {
-  _FieldListWidgetState(this.parent);
-
-  final NewDataTypePageState parent;
 
   List<Field> _fields = List();
   List<DropdownMenuItem> _dropItems;
@@ -214,16 +206,16 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
 
   void _okButtonHandler() async {
     String name;
-    if (!parent.formKey.currentState.validate()) {
+    if (!widget.parent.formKey.currentState.validate()) {
       return;
     }
-    parent.formKey.currentState.save();
-    name = parent.tableNameTextEditController.text;
+    widget.parent.formKey.currentState.save();
+    name = widget.parent.tableNameTextEditController.text;
     bool ret = await MRData.newDataType(name, _fields);
     String userMessage;
 
     // data type exists, notify the user
-    if (ret == null) {
+    if (ret == false) {
       userMessage = MRLocalizations.of(context).dataTypeAlreadyExist;
     } else {
       userMessage = MRLocalizations.of(context).dataTypeAddSucceed;
@@ -240,7 +232,7 @@ class _FieldListWidgetState extends State<_FieldListWidget> {
       _list.add(Dismissible(
         direction: DismissDirection.endToStart,
         key: UniqueKey(),
-        child: _FieldWidget(_fields[i], _dropItems, parent.tapListeners),
+        child: _FieldWidget(_fields[i], _dropItems, widget.parent.tapListeners),
         onDismissed: (direction) {
           Scaffold.of(context).removeCurrentSnackBar();
           Scaffold.of(context).showSnackBar(
@@ -336,7 +328,7 @@ class NewDataTypePageState extends State<NewDataTypePage> {
         padding: EdgeInsets.only(left: 10, right: 10),
         child: TextFormField(
           focusNode: _focusNode,
-          autofocus: true,
+//          autofocus: true,
           decoration: InputDecoration(
 //            border: OutlineInputBorder(),
 //            labelText: MRLocalizations.of(context).tableNameLabel,
@@ -409,9 +401,7 @@ class NewDataTypePageState extends State<NewDataTypePage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        tapListeners.forEach((f){
-          f();
-        });
+        tapListeners.forEach((f){ f(); });
       },
       child: Scaffold(
         //      floatingActionButton: buildSpeedDial(),

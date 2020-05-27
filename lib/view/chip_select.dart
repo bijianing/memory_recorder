@@ -124,7 +124,7 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
   final double animationStartOffset = 0;
   final double animationSeconds = 0.5;
   double _width;
-  double _height;
+  double _height = 50;
   double _absPadding;
 
   @override
@@ -213,22 +213,22 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
     });
     
     return Container(
-          width: _width,
-          height: _height,
-          child: ListView(
-      scrollDirection: Axis.horizontal,
-      children: <Widget>[
-        Container(
-          width: _width,
-          height: _height,
-          child: Stack(
+      width: _width,
+      height: _height,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: <Widget>[
+          Container(
+            width: _width,
+            height: _height,
+            child: Stack(
             key: stackKey,
             alignment: AlignmentDirectional.topStart,
             children:  widgetList,
+            ),
           ),
-        ),
-      ]
-    )
+        ]
+      )
     );
   }
 
