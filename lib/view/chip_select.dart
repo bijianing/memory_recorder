@@ -104,12 +104,14 @@ class ChipSelect extends StatefulWidget {
   final List<String> initChipLabels;
   final double padding;
   final double chipElevation;
+  final BoxDecoration decoration;
 
   ChipSelect({
     Key key,
     this.initChipLabels,
     this.padding,
     this.chipElevation: 0,
+    this.decoration,
   }): super(key: key);
 
   @override
@@ -124,8 +126,13 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
   final double animationStartOffset = 0;
   final double animationSeconds = 0.5;
   double _width;
-  double _height = 50;
+  double _height = 52;
   double _absPadding;
+  bool _waitingSize = true;
+
+  // _ChipSelectState() {
+  //   print("constructor");
+  // }
 
   @override
   void initState() {
@@ -169,10 +176,11 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
   
 
   void afterBuild(_) {
-    if (_height == null || _height == 0) {
+    if (_waitingSize) {
       _height = _chipList[0].widget.size.height;
       _absPadding = widget.padding * _height;
       _height += (_absPadding * 2);
+      _waitingSize = false;
     }
     switch(_animation) {
       case _AnimationType.None:
@@ -228,7 +236,12 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
             ),
           ),
         ]
-      )
+      ),
+
+      decoration: widget.decoration,
+
+      // padding: EdgeInsets.only(left: 2, right: 2),
+      
     );
   }
 
@@ -287,7 +300,8 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
     return _AnimatedChip(
       _controller,
       label,
-      widget.padding,
+      0,
+      // widget.padding,
       interval,
       positionRange,
       selected: selected,

@@ -32,7 +32,7 @@ class _ViewDataPageState extends State<ViewDataPage> {
   List <DocumentSnapshot> dataTypes;
   Map <String, dynamic> fieldValues = Map();
   List<ItemModel> panelData;
-  List<String> _dataTypes = ['...'];
+  List<String> _dataTypes;
 
   _ViewDataPageState(this.key, this.defaultType);
 
@@ -42,41 +42,54 @@ class _ViewDataPageState extends State<ViewDataPage> {
     super.initState();
     panelData = <ItemModel>[
       ItemModel(header: 'Select Data Type', bodyBuilder: dataTypeSelectorBuilder),
-      ItemModel(header: 'Filters', bodyBuilder: dataTypeSelectorBuilder),
-      ItemModel(header: 'Disaplay Method', bodyBuilder: dataTypeSelectorBuilder),
+      ItemModel(header: 'Filters', bodyBuilder: filterBuilder),
+      ItemModel(header: 'Disaplay Method', bodyBuilder: displayMethodBuilder),
     ];
   }
 
 
   Widget dataTypeSelectorBuilder(BuildContext context)
   {
-    // if (_dataTypes == null) {
-    //   MRData.dataTypes.then((types) {
-    //     setState(() {
-    //       _dataTypes = types.map((e) => e['name']).toList() as List<String>;
-    //     });
-    //   });
-    // }
-    // return Column(
-    //   children: <Widget>[
-    //     Text('DateType'),
-    //     ChipSelect(
-    //     initChipLabels: <String>['abc', 'def', 'English', 'excise', 'moring', 'llkjkdf', 'nihao', '成功', '失敗'],
-    //     padding: 0.05,
-    //     chipElevation: 3,
-    //   )
-    //   ],
-    // );
+    if (_dataTypes == null) {
+      MRData.dataTypes.then((types) {
+        setState(() {
+          _dataTypes = types.map((e) => e['name'] as String).toList();
+        });
+      });
+      return Text('...');
+    }
 
-    return Expanded(
-      
-      child: ChipSelect(
-        initChipLabels: <String>['abc', 'def', 'English', 'excise', 'moring', 'llkjkdf', 'nihao', '成功', '失敗'],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('Date type'),
+        ChipSelect(
+        initChipLabels: _dataTypes,
         padding: 0.05,
         chipElevation: 3,
-      ));
+        // decoration: BoxDecoration(
+        //   border: Border.all(color: Theme.of(context).buttonColor),
+        //   borderRadius: BorderRadius.circular(5),
+        // ),
+      ),
+      Divider(),
+      Text('Date field'),
+      ],
+    );
 
   }
+
+  Widget filterBuilder(BuildContext context)
+  {
+    return Text('Filters');
+  }
+
+  
+  Widget displayMethodBuilder(BuildContext context)
+  {
+    return Text('Display methods');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +116,13 @@ class _ViewDataPageState extends State<ViewDataPage> {
                   children: [
                     ExpansionPanel(
                       body: Container(
+                        // color: Colors.purple,
                         padding: EdgeInsets.all(10),
                         child: panelData[index].bodyBuilder(context),
                       ),
                       headerBuilder: (BuildContext context, bool isExpanded) {
                         return Container(
+                          // color: Colors.purpleAccent,
                           padding: EdgeInsets.all(10),
                           child: Text(
                             panelData[index].header,
@@ -128,6 +143,7 @@ class _ViewDataPageState extends State<ViewDataPage> {
                           !panelData[index].isExpanded;
                     });
                   },
+                  expandedHeaderPadding: EdgeInsets.all(5),
                 );
               },
             ),
