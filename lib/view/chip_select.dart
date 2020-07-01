@@ -43,6 +43,7 @@ class _AnimatedChip extends StatelessWidget {
     this.top,
     this.animationInterval,
     this.postionRange,
+
     {
       Key key,
       this.selected : false,
@@ -105,6 +106,7 @@ class ChipSelect extends StatefulWidget {
   final double padding;
   final double chipElevation;
   final BoxDecoration decoration;
+  final void Function(String name, bool value) onSelectedChanged;
 
   ChipSelect({
     Key key,
@@ -112,6 +114,7 @@ class ChipSelect extends StatefulWidget {
     this.padding,
     this.chipElevation: 0,
     this.decoration,
+    this.onSelectedChanged,
   }): super(key: key);
 
   @override
@@ -310,6 +313,7 @@ class _ChipSelectState extends State<ChipSelect> with SingleTickerProviderStateM
         _animation = _AnimationType.DoAnimation;
         _controller.reset();
         doNewAnimation(label, value);
+        widget.onSelectedChanged(label, value);
       },
     );
   }
